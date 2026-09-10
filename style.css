@@ -1,1 +1,396 @@
-/* Add your CSS here */
+/* ---------- Tokens ---------- */
+:root {
+    --blue: #0068b5;
+    --blue-light: #1c7ed6;
+    --navy: #0b2a46;
+    --navy-deep: #08355c;
+    --bg: #eef1f4;
+    --white: #ffffff;
+    --ink: #132435;
+    --ink-soft: #5a6b7a;
+    --teal: #0f8f72;
+    --card-w: 250px;
+    --rail-y: 108px;
+    --shaft-h: 40px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    background: linear-gradient(120deg, var(--blue-light) 0%, var(--navy-deep) 100%);
+    color: var(--white);
+    text-align: center;
+    padding: 64px 24px 80px;
+}
+
+.wordmark {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 2.1rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;
+}
+
+.wordmark .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #6fc4ff;
+    border-radius: 50%;
+    margin-left: 3px;
+    vertical-align: 12px;
+}
+
+.hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.3rem, 6vw, 4.2rem);
+    line-height: 1.08;
+    margin: 0 0 28px;
+    letter-spacing: -0.5px;
+}
+
+.rule {
+    width: 90px;
+    height: 3px;
+    background: #6fc4ff;
+    margin: 0 auto 28px;
+    border-radius: 2px;
+}
+
+.hero-sub {
+    max-width: 620px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+/* ---------- Timeline section ---------- */
+.timeline-section {
+    padding: 56px 0 48px;
+}
+
+.timeline-scroller {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: var(--rail-y) 40px 24px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 40px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* the rail reads as a circuit trace / data bus that every drive plugs into */
+.rail {
+    position: absolute;
+    top: var(--rail-y);
+    left: 40px;
+    right: 40px;
+    height: 6px;
+    border-radius: 3px;
+    background:
+        repeating-linear-gradient(to right, rgba(255,255,255,.55) 0 2px, transparent 2px 14px),
+        linear-gradient(180deg, #16405f, #0b2a46 55%, #061a2c);
+    box-shadow: 0 1px 0 rgba(255,255,255,.15) inset, 0 3px 6px rgba(11,42,70,.25);
+}
+
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 26px;
+    width: max-content;
+}
+
+.card {
+    flex-shrink: 0;
+    width: var(--card-w);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+}
+
+/* Blue-to-teal gradient across the nine drives: the plastic literally
+   changes colour as the timeline moves from founding toward net-zero. */
+.timeline .card:nth-child(1) { --usb-color: #0068b5; }
+.timeline .card:nth-child(2) { --usb-color: #026dad; }
+.timeline .card:nth-child(3) { --usb-color: #0472a4; }
+.timeline .card:nth-child(4) { --usb-color: #06779c; }
+.timeline .card:nth-child(5) { --usb-color: #087c94; }
+.timeline .card:nth-child(6) { --usb-color: #09808b; }
+.timeline .card:nth-child(7) { --usb-color: #0b8583; }
+.timeline .card:nth-child(8) { --usb-color: #0d8a7a; }
+.timeline .card:nth-child(9) { --usb-color: #0f8f72; }
+
+.usb-toggle {
+    all: unset;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    padding-top: var(--shaft-h);
+}
+
+/* ---------- Metal connector shaft: plugs the drive into the rail ---------- */
+.usb-connector {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: calc(var(--shaft-h) + 6px);
+    border-radius: 4px 4px 0 0;
+    background:
+        repeating-linear-gradient(to right, transparent 0 8px, rgba(20,26,32,.35) 8px 9px),
+        linear-gradient(180deg, #f2f4f6 0%, #c7ced5 45%, #8d97a2 65%, #b9c1c9 100%);
+    box-shadow: 0 0 0 1px rgba(11,42,70,.25) inset, 0 2px 4px rgba(11,42,70,.2);
+    transition: filter 0.25s ease;
+}
+
+.usb-connector::after {
+    /* the seam where the shell overmould grips the metal shaft */
+    content: "";
+    position: absolute;
+    left: -3px;
+    right: -3px;
+    bottom: 6px;
+    height: 8px;
+    background: var(--usb-color);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2) inset;
+}
+
+/* ---------- Shell: the coloured plastic body of the drive ---------- */
+.usb-shell {
+    display: block;
+    position: relative;
+    background: linear-gradient(165deg, color-mix(in srgb, var(--usb-color) 82%, white 18%) 0%, var(--usb-color) 55%, color-mix(in srgb, var(--usb-color) 78%, black 22%) 100%);
+    border-radius: 8px 8px 14px 14px;
+    padding: 14px 12px 18px;
+    box-shadow: 0 4px 14px rgba(11, 42, 70, 0.18);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.28s ease;
+}
+
+.usb-toggle:hover .usb-shell,
+.usb-toggle:focus .usb-shell {
+    transform: translateY(8px);
+    box-shadow: 0 16px 28px rgba(11, 42, 70, 0.28);
+}
+
+.usb-toggle:hover .usb-connector,
+.usb-toggle:focus .usb-connector {
+    filter: brightness(1.08);
+}
+
+.usb-toggle:focus-visible .usb-shell {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+}
+
+/* status LED: dark until the drive is "active" on hover/focus */
+.usb-led {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.35);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.15) inset;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.usb-toggle:hover .usb-led,
+.usb-toggle:focus .usb-led {
+    background: #baffde;
+    box-shadow: 0 0 7px 2px #baffde;
+}
+
+/* label sticker: the milestone photo, taped on slightly askew */
+.usb-label {
+    display: block;
+    width: 100%;
+    height: 108px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.25);
+    transform: rotate(-1.1deg);
+}
+
+.timeline .card:nth-child(even) .usb-label {
+    transform: rotate(1.1deg);
+}
+
+.usb-plate {
+    display: block;
+    padding: 14px 4px 0;
+}
+
+.year {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 4px;
+}
+
+.title {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.35;
+    color: var(--white);
+}
+
+.desc {
+    display: block;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,.85);
+    text-align: left;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
+    margin-top: 0;
+}
+
+.usb-toggle:hover .desc,
+.usb-toggle:focus .desc,
+.usb-toggle:focus-visible .desc {
+    max-height: 220px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+/* ---------- Goal drives: still boxed up, not yet plugged in for real ---------- */
+.card[data-status="goal"] .usb-connector {
+    background: repeating-linear-gradient(to right, transparent 0 8px, rgba(11,42,70,.18) 8px 9px, transparent 9px 9px), transparent;
+    border: 1.5px dashed var(--usb-color);
+    box-shadow: none;
+}
+
+.card[data-status="goal"] .usb-connector::after {
+    background: transparent;
+    border: 1.5px dashed var(--usb-color);
+    bottom: 5px;
+}
+
+.card[data-status="goal"] .usb-shell {
+    background: rgba(255,255,255,.55);
+    border: 1.5px dashed var(--usb-color);
+    box-shadow: none;
+}
+
+.card[data-status="goal"] .year,
+.card[data-status="goal"] .title {
+    color: var(--usb-color);
+}
+
+.card[data-status="goal"] .desc {
+    color: var(--ink-soft);
+}
+
+.card[data-status="goal"] .usb-label {
+    filter: saturate(.55) brightness(1.03);
+    opacity: .9;
+}
+
+.card[data-status="goal"] .usb-led {
+    background: transparent;
+    border: 1.5px dashed var(--usb-color);
+}
+
+.card[data-status="goal"] .usb-toggle:hover .usb-led,
+.card[data-status="goal"] .usb-toggle:focus .usb-led {
+    background: var(--usb-color);
+    box-shadow: 0 0 6px 2px color-mix(in srgb, var(--usb-color) 60%, transparent);
+}
+
+.hint {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin: 8px 0 0;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .desc, .usb-shell, .usb-connector, .usb-led { transition: none; }
+    .usb-toggle:hover .usb-shell, .usb-toggle:focus .usb-shell { transform: none; }
+}
+
+/* ---------- Mobile: vertical bus, drives plug in from the left ---------- */
+@media (max-width: 720px) {
+    :root { --shaft-h: 34px; }
+
+    .hero { padding: 48px 20px 56px; }
+
+    .timeline-scroller {
+        overflow-x: visible;
+        padding: 8px 20px 8px 56px;
+    }
+
+    .rail {
+        top: 8px;
+        bottom: 8px;
+        left: 24px;
+        right: auto;
+        width: 6px;
+        height: auto;
+        background:
+            repeating-linear-gradient(to bottom, rgba(255,255,255,.55) 0 2px, transparent 2px 14px),
+            linear-gradient(90deg, #16405f, #0b2a46 55%, #061a2c);
+    }
+
+    .timeline {
+        flex-direction: column;
+        width: 100%;
+        gap: 26px;
+    }
+
+    .card { width: 100%; }
+
+    .usb-toggle {
+        padding-top: 0;
+        padding-left: var(--shaft-h);
+        display: flex;
+        align-items: stretch;
+    }
+
+    .usb-connector {
+        top: 50%;
+        left: 0;
+        transform: translate(-38px, -50%) rotate(-90deg);
+    }
+
+    .usb-connector::after {
+        left: -3px;
+        right: -3px;
+    }
+
+    .usb-toggle:hover .usb-shell,
+    .usb-toggle:focus .usb-shell {
+        transform: translateX(8px);
+    }
+
+    .usb-shell { flex: 1; border-radius: 8px 14px 14px 8px; }
+
+    .hint { padding: 0 20px; }
+}
